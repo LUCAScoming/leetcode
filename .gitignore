@@ -1,2 +1,22 @@
 .idea/
 *.iml
+##----------idea----------
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
+# build
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+build/
+
+# gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+build/
