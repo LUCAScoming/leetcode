@@ -1,4 +1,4 @@
-package java;
+package javas.leetcode;
 
 import java.util.*;
 
@@ -134,6 +134,27 @@ class Solution {
         }
         return res;
     }
+
+
+    /*
+     * 11. 盛最多水的容器
+     * */
+    public int maxArea(int[] height) {
+        int res = 0;
+        int left = 0;
+        int right = height.length - 1;
+        while (left < right ) {
+           int t = (right-left)*Math.min(height[left],height[right]);
+           res=Math.max(t,res);
+           if (height[left]<height[right]){
+               left++;
+           }else {
+               right--;
+           }
+        }
+        return res;
+
+    }
 }
 
 class TreeNode {
@@ -154,6 +175,7 @@ public class MainClass {
     public static void main(String[] args) {
 
         String s [] ={"flower", "flow", "flight"};
-        System.out.println(new Solution().longestCommonPrefix(s));
+        int num [] ={1, 8, 6, 2, 5, 4, 8, 3, 7};
+        System.out.println(new Solution().maxArea(num));
     }
 }
