@@ -37,6 +37,81 @@ class Solution {
         return p;
     }
 
+    /*题目描述
+   一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）*/
+    public int JumpFloor(int target) {
+        if (target <= 1) return 1;
+        return JumpFloor(target - 1) + JumpFloor(target - 2);
+    }
+
+    public int JumpFloor2(int target) {
+        int a = 1;
+        int b = 2;
+        int c = 0;
+        if (target == 1) {
+            return 1;
+        }
+        if (target == 2) {
+            return 2;
+        }
+        for (int i = 3; i <= target; i++) {
+            c = a + b;
+            a = b;
+            b = c;
+        }
+        return c;
+
+    }
+
+    /*
+     * 7. 整数反转
+     * */
+    public int reverse(int x) {
+//        String s = Integer.toString(x);
+//        int f =1;
+//        if (x<0){
+//            f=-1;
+//        }
+//        return Integer.valueOf(new StringBuilder(s).reverse().toString())*f;
+/*
+需要处理反转之后int溢出的问题
+* */
+        int res = 0;
+        while (x != 0) {
+            //每次取末尾数字
+            int temp = x % 10;
+            //判断是否 大于 最大32位整数
+            if (res > 214748364 || res == 214748364 && temp > 7) {
+                return 0;
+            }
+            //判断是否 小于 最小32位整数
+            if (res < -214748364 || (res == -214748364 && temp < -8)) {
+                return 0;
+            }
+            res = res * 10 + temp;
+            x /= 10;
+        }
+        return res;
+    }
+
+
+    /*判断回文*/
+    public boolean isPalindrome(int x) {
+        String s = Integer.toString(x);
+        int i = 0;
+        int j = s.length() - 1;
+        while (i < j) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+
+
     /*
      * 331. 验证二叉树的前序序列化
      * */
@@ -120,6 +195,18 @@ class Solution {
     }
 
 
+    /*剑指 Offer 63. 股票的最大利润*/
+    public int maxProfit(int[] prices) {
+        int c = 0;
+        int minP = Integer.MAX_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            minP = Math.min(minP, prices[i]);
+            c = Math.max(c, prices[i] - minP);
+        }
+        return c;
+    }
+
+
     public int numberOfMatches(int n) {
         int res = 0;
 
@@ -155,6 +242,116 @@ class Solution {
         return res;
 
     }
+
+    /*
+    快排
+    * */
+    public int[] quick(int[] arg) {
+        sort(arg, 0, arg.length - 1);
+        return arg;
+    }
+
+    public void sort(int[] arg, int low, int height) {
+        if (low >= height) return;
+        int index = partion(arg, low, height);
+        sort(arg, low, index - 1);
+        sort(arg, index + 1, height);
+    }
+
+    private int partion(int[] arg, int low, int height) {
+        int key = arg[height];
+        int temp = 0;
+        int t;
+        while (low < height) {
+            while (arg[low] < key && low < height) low++;
+            while (arg[height] > key && low < height) height--;
+            temp = arg[height];
+            arg[height] = arg[low];
+            arg[low] = temp;
+        }
+        t = key;
+        key = arg[height];
+        arg[height] = t;
+        return height;
+
+    }
+/*
+19. 删除链表的倒数第 N 个结点
+* */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head==null){
+            return new ListNode();
+        }
+        ListNode reverListNode =reverseList(head);
+        ListNode pre = new ListNode(0);
+        pre.next=reverListNode;
+        ListNode cur =pre;
+        for (int i=0;i<n-1&&cur.next!=null;i++){
+            cur = cur.next;
+        }
+        cur.next=cur.next.next;
+//        while (cur.next!=null&&n>0){
+//
+//            if (cur.next.val==n){
+//                cur.next=cur.next.next;
+//            }else {
+//                cur=cur.next;
+//            }
+//        }
+        return reverseList(pre.next);
+    }
+/*
+* 反转链表
+* */
+    public ListNode reverseList (ListNode head){
+        ListNode pre =null;
+        ListNode cur = head;
+
+        while (cur!=null){
+            ListNode nextNode = cur.next;
+            cur.next =pre;
+            pre=cur;
+            cur=nextNode;
+        }
+        return pre;
+    }
+
+
+
+}
+
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {
+    }
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+class ListNodeProcess {
+    public ListNode head = new ListNode(-100);
+
+    public ListNode getListNode (int [] nums){
+         ListNode t= head;
+
+         for (int a:nums){
+             ListNode node = new ListNode(a);
+             t.next=node;
+             t=t.next;
+         }
+         return head;
+    }
+
 }
 
 class TreeNode {
@@ -166,6 +363,7 @@ class TreeNode {
         this.val = val;
 
     }
+
 
 }
 
