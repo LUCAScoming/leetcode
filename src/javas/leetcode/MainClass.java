@@ -364,7 +364,24 @@ class Solution {
         cycle(res, x + 1, y + 1, x1 - 1, y1 - 1, total, s);
     }
 
+    //102.二叉树的层序遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        List<List<Integer>> list = new ArrayList<>();
+        deque.push(root);
+        while (!deque.isEmpty()) {
+            List<Integer> temp = new ArrayList<>();
+            for (int i = deque.size(); i > 0; i--) {
+            TreeNode node =deque.pollLast();
+            temp.add(node.val);
 
+           if (node.left!=null)   deque.push(node.left);
+           if (node.right!=null)  deque.push(node.right);
+            }
+            list.add(temp);
+        }
+        return list;
+    }
 }
 
 
@@ -415,12 +432,57 @@ class TreeNode {
 }
 
 public class MainClass {
+/*string 转 二叉树*/
+    public static TreeNode stringToTreeNode(String input) {
+        input = input.trim();
+        input = input.substring(1, input.length() - 1);
+        if (input.length() == 0) {
+            return null;
+        }
 
+        String[] parts = input.split(",");
+        String item = parts[0];
+        TreeNode root = new TreeNode(Integer.parseInt(item));
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.add(root);
 
+        int index = 1;
+        while (!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.remove();
+
+            if (index == parts.length) {
+                break;
+            }
+
+            item = parts[index++];
+            item = item.trim();
+            if (!item.equals("null")) {
+                int leftNumber = Integer.parseInt(item);
+                node.left = new TreeNode(leftNumber);
+                nodeQueue.add(node.left);
+            }
+
+            if (index == parts.length) {
+                break;
+            }
+
+            item = parts[index++];
+            item = item.trim();
+            if (!item.equals("null")) {
+                int rightNumber = Integer.parseInt(item);
+                node.right = new TreeNode(rightNumber);
+                nodeQueue.add(node.right);
+            }
+        }
+        return root;
+    }
     public static void main(String[] args) {
+
+
 
         String s [] ={"flower", "flow", "flight"};
         int num [] ={1, 8, 6, 2, 5, 4, 8, 3, 7};
-        System.out.println(new Solution().generateMatrix(3));
+        String s1 ="[3,9,20,null,null,15,7]";
+        System.out.println(new Solution().levelOrder(stringToTreeNode(s1)));
     }
 }
