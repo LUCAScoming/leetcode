@@ -351,6 +351,53 @@ class Solution {
        for (int i=x1;i>x;i--)res.add(matrix[i][y]);
        cycle(res,x+1,y+1,x1-1,y1-1,matrix);
     }
+    /*
+     * 59. 螺旋矩阵 II
+     * */
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        int total = n * n;
+        cycle(res, 0, 0, n - 1, n - 1, total, 1);
+        return res;
+
+    }
+
+    private void cycle(int[][] res, int x, int y, int x1, int y1, int total, int s) {
+        if (x > x1 || y > y1) return;
+
+        if (x1 == x) {
+            for (int i = y; i <= y1; i++) {
+                res[x][i] = s;
+            }
+        }
+        if (y == y1) {
+            for (int i = x; i <= x1; i++) {
+                res[i][y] = s;
+            }
+        }
+
+        for (int i = y; i < y1; i++) {
+            res[x][i] = s;
+            s++;
+        }
+
+        for (int i = x; i < x1; i++) {
+            res[i][y1] = s;
+            s++;
+        }
+
+        for (int i = y1; i > y; i--) {
+            res[x1][i] = s;
+            s++;
+        }
+
+        for (int i = x1; i > x; i--) {
+            res[i][y] = s;
+            s++;
+        }
+        cycle(res, x + 1, y + 1, x1 - 1, y1 - 1, total, s);
+    }
+
 
 }
 
