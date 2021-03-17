@@ -7,10 +7,10 @@ package sington;
 public class StaticSington {
 
     public static class innerClass {
-        public static StaticSington staticSington = new StaticSington();
+        private static StaticSington staticSington = new StaticSington();
     }
 
-    public static final StaticSington getInstace (){
+    public static StaticSington getInstace (){
         return innerClass.staticSington;
     }
 }

@@ -315,8 +315,42 @@ class Solution {
         }
         return pre;
     }
+/*
+* 54. 螺旋矩阵
+*
+* 给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
+* */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m=matrix[0].length;
+        int n=matrix.length;
+        List<Integer>res= new ArrayList<>();
+        cycle(res,0,0,n-1,m-1,matrix);
+        return res;
 
+    }
 
+    private void cycle(List<Integer> res, int x, int y, int x1, int y1, int[][] matrix) {
+        if (x1<x||y1<y) return;
+
+        if(x==x1){
+            for(int i=y;i<=y1;i++){
+                res.add(matrix[x][i]);
+            }
+            return;
+        }
+
+        if(y==y1){
+            for(int i =x;i<=x1;i++){
+                res.add(matrix[i][y]);
+            }
+            return;
+        }
+       for (int i=y;i<y1;i++)res.add(matrix[x][i]);
+       for (int i=x;i<x1;i++)res.add(matrix[i][y1]);
+       for (int i=y1;i>y;i--)res.add(matrix[x1][i]);
+       for (int i=x1;i>x;i--)res.add(matrix[i][y]);
+       cycle(res,x+1,y+1,x1-1,y1-1,matrix);
+    }
 
 }
 
@@ -373,7 +407,8 @@ public class MainClass {
     public static void main(String[] args) {
 
         String s [] ={"flower", "flow", "flight"};
-        int num [] ={1, 8, 6, 2, 5, 4, 8, 3, 7};
-        System.out.println(new Solution().maxArea(num));
+//        [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+        int num [][] ={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        System.out.println(new Solution().spiralOrder(num));
     }
 }
