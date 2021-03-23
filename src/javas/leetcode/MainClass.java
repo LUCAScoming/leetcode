@@ -1,4 +1,4 @@
-package javas.leetcode;
+package leetcode;
 
 import java.util.*;
 
@@ -357,12 +357,12 @@ class Solution {
     public int[][] generateMatrix(int n) {
         int[][] res = new int[n][n];
         int total = n * n;
-        cycle(res, 0, 0, n - 1, n - 1, total, 1);
+        cycle2(res, 0, 0, n - 1, n - 1, total, 1);
         return res;
 
     }
 
-    private void cycle(int[][] res, int x, int y, int x1, int y1, int total, int s) {
+    private void cycle2(int[][] res, int x, int y, int x1, int y1, int total, int s) {
         if (x > x1 || y > y1) return;
 
         if (x1 == x) {
@@ -395,8 +395,20 @@ class Solution {
             res[i][y] = s;
             s++;
         }
-        cycle(res, x + 1, y + 1, x1 - 1, y1 - 1, total, s);
+        cycle2(res, x + 1, y + 1, x1 - 1, y1 - 1, total, s);
     }
+
+    public int numDistinct(String s, String t) {
+        int slen = s.length(), tlen = t.length();
+        int[] f = new int[tlen + 1];
+        f[0] = 1;
+        for(int i = 1; i <= slen; i ++ )
+            for(int j = tlen; j >= 1; j -- )
+                if(s.charAt(i - 1) == t.charAt(j - 1))
+                    f[j] += f[j - 1];
+        return f[tlen];
+    }
+
 
     //102.二叉树的层序遍历
     public List<List<Integer>> levelOrder(TreeNode root) {
@@ -415,6 +427,56 @@ class Solution {
             list.add(temp);
         }
         return list;
+    }
+/*
+* 198. 打家劫舍
+* */
+    public int rob(int[] nums) {
+        if (nums.length==1){
+            return nums[0];
+        }
+        if (nums.length==2){
+            return Math.max(nums[0],nums[1]);
+        }
+        int [] dp = new int [nums.length];
+        dp[0]=nums[0];
+        dp[1]=Math.max(nums[0],nums[1]);
+
+        for (int i=2;i<nums.length;i++){
+            dp[i]=Math.max(dp[i-1],dp[i-2]+nums[i]);
+        }
+        return dp[nums.length-1];
+
+    }
+
+    /*
+    * 213. 打家劫舍 II
+    * */
+    public int rob2(int[] nums) {
+        if (nums.length==1){
+            return nums[0];
+        }
+        if (nums.length==2){
+            return Math.max(nums[0],nums[1]);
+        }
+        int dp1[] = new int[nums.length];
+        dp1[0]=nums[0];
+        dp1[1]=Math.max(nums[0],nums[1]);
+        dp1[2]=Math.max(dp1[1],nums[2]+dp1[0]);
+        for (int i=2;i<nums.length-1;i++){
+            dp1[i]=Math.max(dp1[i-2]+nums[i],dp1[i-1]);
+        }
+
+        int dp2[] = new int[nums.length];
+        dp2[0]=nums[1];
+        dp2[1]=Math.max(nums[2],nums[1]);
+        dp2[2]=Math.max(dp2[1],nums[3]+dp2[0]);
+        for (int i=3;i<nums.length;i++){
+            dp2[i]=Math.max(dp1[i-2]+nums[i],dp1[i-1]);
+        }
+        int max= Math.max(dp1[nums.length-2],dp2[nums.length-1]);
+        return max;
+
     }
 }
 
@@ -515,8 +577,9 @@ public class MainClass {
 
 
         String s [] ={"flower", "flow", "flight"};
-        int num [] ={1, 8, 6, 2, 5, 4, 8, 3, 7};
-        String s1 ="[3,9,20,null,null,15,7]";
-        System.out.println(new Solution().levelOrder(stringToTreeNode(s1)));
+//        [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+        int num [][] ={{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        int nums[]={2,3,2};
+        System.out.println(new Solution().rob2(nums));
     }
 }
